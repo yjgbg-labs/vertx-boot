@@ -1,0 +1,13 @@
+version: 1
+
+jobs:
+  - name: runner-smoke
+    run: |
+      printf 'Runner: %s\n' "${RUNNER_NAME:-local}"
+      uname -sm
+      test "$(uname -s)" = Linux
+      test "$(uname -m)" = x86_64
+      bun --version
+      command -v groot
+      groot --help > /dev/null
+      systemctl --user is-active groot-github-runner-yjgbg-labs.service

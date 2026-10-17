@@ -1,0 +1,27 @@
+name: Home runner smoke
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - .github/workflows/runner-smoke.yml
+      - jobs.yaml
+
+permissions:
+  contents: read
+
+concurrency:
+  group: runner-smoke-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  smoke:
+    if: github.repository == 'yjgbg-labs/vertx-boot'
+    runs-on: [self-hosted, Linux, X64, home]
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - name: Verify local runner and tools
+        run: groot jobs runner-smoke
